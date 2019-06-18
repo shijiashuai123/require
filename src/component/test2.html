@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+        }
+        ul,li {
+            list-style: none;
+        }
+     
+       
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input v-model="inputVal" type="text" @blur="mouseLeave" placeholder="请输入">
+        <div>结果：{{inputVal2}}</div>
+        <div style="color:red;" v-if="error">{{error}}</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                inputVal: '',
+                inputVal2: '',
+                error: ''
+            },
+            methods: {
+                mouseLeave() {
+                    console.log(vm.inputVal.split('.')[1])
+                    console.log(this.isFloat(Number(vm.inputVal)))
+                    if (!this.isFloat(Number(vm.inputVal))) {
+                        if (vm.inputVal.split('.')[1] != 0) {
+                            vm.error = '输入正确格式'
+                        }
+                    } else {
+                        vm.error = ''
+                    }
+                    
+                    if (!vm.inputVal) {
+                        vm.inputVal2 = ''
+                        return
+                    }
+
+                    if (vm.inputVal.charAt(vm.inputVal.length - 1) == '.') {
+                        vm.inputVal2 = vm.inputVal + '0'
+                        return
+                    }
+
+                    if (vm.inputVal.indexOf('.') == -1) {
+                        vm.inputVal2 = vm.inputVal + '.0'
+                    } else {
+                        if (vm.inputVal.split('.')[1] == 0) {
+                            vm.inputVal2 = vm.inputVal
+                            return
+                        }
+                        vm.inputVal2 = Math.round(vm.inputVal * 10) / 10
+                    }
+                },
+                isFloat(n) { // 判断是否为浮点型
+                    return ~~n !== n;
+                }
+            },
+
+            mounted() {
+                
+            },      
+            created() {
+              
+            }
+        })
+    </script>
+</body>
+</html>
